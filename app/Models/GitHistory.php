@@ -47,17 +47,29 @@ class GitHistory extends Model
     public static function extractTicketId(string $commitMessage): ?int
     {
         // Pattern untuk mencari ticket ID dalam commit message
-        // Contoh: "Fix bug #123", "Update feature TICKET-456", "Fix T-789"
+        // Contoh: "Fix bug #123", "Update feature TICKET-456", "Fix T-789", "#EPC-3D76K1"
         $patterns = [
-            '/#(\d+)/',           // #123
-            '/TICKET-(\d+)/i',    // TICKET-456
-            '/T-(\d+)/i',         // T-789
-            '/TICKET(\d+)/i',     // TICKET123
+            '/#(\d+)/',                    // #123
+            '/TICKET-(\d+)/i',             // TICKET-456
+            '/T-(\d+)/i',                  // T-789
+            '/TICKET(\d+)/i',              // TICKET123
+            '/#([A-Za-z]+-[A-Za-z0-9]+)/i', // #EPC-3D76K1, #epc-LMM1ZD, #ABC-123XYZ
         ];
 
         foreach ($patterns as $pattern) {
             if (preg_match($pattern, $commitMessage, $matches)) {
-                return (int) $matches[1];
+                $ticketIdentifier = $matches[1];
+                
+                // Jika berupa angka, langsung return
+                if (is_numeric($ticketIdentifier)) {
+                    return (int) $ticketIdentifier;
+                }
+                
+                // Jika berupa UUID/string, cari ticket berdasarkan UUID
+                $ticket = Ticket::where('uuid', $ticketIdentifier)->first();
+                if ($ticket) {
+                    return $ticket->id;
+                }
             }
         }
 

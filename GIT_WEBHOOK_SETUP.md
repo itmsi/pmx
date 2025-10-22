@@ -41,6 +41,8 @@ Untuk melacak commit ke ticket tertentu, gunakan format berikut dalam commit mes
 - `TICKET-123` - Mengacu ke ticket ID 123
 - `T-123` - Mengacu ke ticket ID 123
 - `TICKET123` - Mengacu ke ticket ID 123
+- `#EPC-3D76K1` - Mengacu ke ticket dengan UUID EPC-3D76K1
+- `#epc-LMM1ZD` - Mengacu ke ticket dengan UUID epc-LMM1ZD
 
 ### Contoh Commit Message:
 ```bash
@@ -48,6 +50,8 @@ git commit -m "Fix bug #123 - resolve authentication issue"
 git commit -m "Update feature TICKET-456 - add new dashboard"
 git commit -m "Refactor T-789 - improve code structure"
 git commit -m "Add new feature TICKET123 - implement user authentication"
+git commit -m "Fix bug #EPC-3D76K1 - resolve authentication issue"
+git commit -m "Update feature #epc-LMM1ZD - add new dashboard"
 ```
 
 ## Data yang Disimpan
