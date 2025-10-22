@@ -101,6 +101,11 @@ class Ticket extends Model
         return $this->belongsTo(TicketPriority::class, 'priority_id');
     }
 
+    public function gitHistories(): HasMany
+    {
+        return $this->hasMany(GitHistory::class)->orderBy('pushed_at', 'desc');
+    }
+
     // Helper methods
     public function assignUser(User $user): void
     {

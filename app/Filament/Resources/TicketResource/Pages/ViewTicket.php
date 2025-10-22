@@ -244,6 +244,19 @@ class ViewTicket extends ViewRecord
                             ->hiddenLabel()
                             ->view('filament.resources.ticket-resource.timeline-history'),
                     ]),
+
+                Section::make('Git History')
+                    ->icon('heroicon-o-code-bracket')
+                    ->description('Git commits related to this ticket')
+                    ->collapsible()
+                    ->schema([
+                        TextEntry::make('git_histories')
+                            ->hiddenLabel()
+                            ->state(function (Ticket $record) {
+                                return $record->gitHistories()->with('user')->get() ?? collect();
+                            })
+                            ->view('filament.resources.ticket-resource.git-history'),
+                    ]),
             ]);
     }
 
