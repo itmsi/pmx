@@ -76,8 +76,8 @@
                     How to link commits to this ticket:
                 </h4>
                 <ul class="text-xs text-blue-800 dark:text-blue-200 space-y-1">
-                    <li>• Include ticket ID in your commit message (e.g., "Fix bug #{{ $record->id }}")</li>
-                    <li>• Use formats like: #{{ $record->id }}, TICKET-{{ $record->id }}, or T-{{ $record->id }}</li>
+                    <li>• Include ticket ID in your commit message (e.g., "Fix bug #123")</li>
+                    <li>• Use formats like: #123, TICKET-123, or T-123</li>
                     <li>• Configure webhook URL: <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">{{ url('/api/git/webhook') }}</code></li>
                 </ul>
             </div>

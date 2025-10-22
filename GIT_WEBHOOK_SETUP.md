@@ -47,6 +47,7 @@ Untuk melacak commit ke ticket tertentu, gunakan format berikut dalam commit mes
 git commit -m "Fix bug #123 - resolve authentication issue"
 git commit -m "Update feature TICKET-456 - add new dashboard"
 git commit -m "Refactor T-789 - improve code structure"
+git commit -m "Add new feature TICKET123 - implement user authentication"
 ```
 
 ## Data yang Disimpan
