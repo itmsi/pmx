@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\ExternalLogin;
 use App\Livewire\ExternalDashboard;
 use App\Http\Controllers\Auth\GoogleController;
-use App\Http\Controllers\Api\GitWebhookController;
+use App\Http\Controllers\WebhookController;
 
 Route::get('/', function () {
     return redirect('/admin/login');
@@ -20,11 +20,10 @@ Route::prefix('external')->name('external.')->group(function () {
     Route::get('/{token}/dashboard', ExternalDashboard::class)->name('dashboard');
 });
 
-// Git Webhook Routes
-Route::prefix('api/git')->group(function () {
-    // Webhook endpoint untuk menerima data dari Git providers
-    Route::post('/webhook', [GitWebhookController::class, 'handleWebhook'])->name('git.webhook');
-    
-    // API untuk mendapatkan git history ticket
-    Route::get('/ticket/{ticketId}/history', [GitWebhookController::class, 'getTicketGitHistory'])->name('git.ticket.history');
+// Git Webhook Route - tanpa middleware apapun
+Route::post('/webhook/git', [WebhookController::class, 'gitWebhook'])->name('webhook.git');
+
+// Test route sederhana
+Route::post('/test-webhook', function() {
+    return response()->json(['message' => 'Webhook test successful', 'timestamp' => now()]);
 });

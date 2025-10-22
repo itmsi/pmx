@@ -6,6 +6,11 @@ Sistem ini mendukung integrasi dengan Git providers (GitHub, GitLab, Bitbucket) 
 
 ### 1. Webhook URL
 ```
+POST {{APP_URL}}/webhook/git
+```
+
+**Alternatif URL:**
+```
 POST {{APP_URL}}/api/git/webhook
 ```
 
@@ -13,7 +18,7 @@ POST {{APP_URL}}/api/git/webhook
 1. Pergi ke repository settings
 2. Pilih "Webhooks" di sidebar
 3. Klik "Add webhook"
-4. Masukkan URL webhook: `https://your-domain.com/api/git/webhook`
+4. Masukkan URL webhook: `https://your-domain.com/webhook/git`
 5. Pilih "Just the push event"
 6. Klik "Add webhook"
 
