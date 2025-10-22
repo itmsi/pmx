@@ -14,8 +14,13 @@
                         <div class="flex items-center gap-2 mb-2">
                             <div class="flex items-center gap-2">
                                 <span class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                    👤 {{ $history->user?->name ?? 'Unknown User' }}
+                                    👤 {{ $history->user?->name ?? $history->author_name ?? 'Unknown User' }}
                                 </span>
+                                @if($history->author_email && !$history->user)
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                                        ({{ $history->author_email }})
+                                    </span>
+                                @endif
                             </div>
                             <span class="text-xs text-gray-500 dark:text-gray-400">
                                 {{ $history->pushed_at->format('M d, Y H:i') }}

@@ -13,6 +13,8 @@ class GitHistory extends Model
     protected $fillable = [
         'ticket_id',
         'user_id',
+        'author_name',
+        'author_email',
         'branch',
         'commit_message',
         'commit_hash',

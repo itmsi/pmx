@@ -239,6 +239,8 @@ class WebhookController extends Controller
         $gitHistory = GitHistory::create([
             'ticket_id' => $ticketId,
             'user_id' => $user?->id,
+            'author_name' => $commit['author']['name'],
+            'author_email' => $commit['author']['email'],
             'branch' => $branch,
             'commit_message' => $commit['message'],
             'commit_hash' => $commit['id'],
