@@ -1,8 +1,8 @@
-# DewaKoding Project Management
+# Falaq Project Management System
 
-![image](https://raw.githubusercontent.com/SeptiawanAjiP/dewakoding-project-management/refs/heads/main/image-1.jpeg)
-![image](https://raw.githubusercontent.com/SeptiawanAjiP/dewakoding-project-management/refs/heads/main/image-4.jpeg)
-![image](https://raw.githubusercontent.com/SeptiawanAjiP/dewakoding-project-management/refs/heads/main/image-5.jpeg)
+![image](https://raw.githubusercontent.com/abdulfalaq5/pmx/main/image-1.jpeg)
+![image](https://raw.githubusercontent.com/abdulfalaq5/pmx/main/image-4.jpeg)
+![image](https://raw.githubusercontent.com/abdulfalaq5/pmx/main/image-5.jpeg)
 
 A Laravel Filament 3 application for managing projects with ticket management and status tracking.
 
@@ -31,19 +31,19 @@ A Laravel Filament 3 application for managing projects with ticket management an
 - MySQL 8.0+ / PostgreSQL 12+
 - Composer
 
-![image](https://raw.githubusercontent.com/SeptiawanAjiP/dewakoding-project-management/refs/heads/main/image-2.jpeg)
-![image](https://raw.githubusercontent.com/SeptiawanAjiP/dewakoding-project-management/refs/heads/main/image-6.jpeg)
-![image](https://raw.githubusercontent.com/SeptiawanAjiP/dewakoding-project-management/refs/heads/main/image-7.jpeg)
-![image](https://raw.githubusercontent.com/SeptiawanAjiP/dewakoding-project-management/refs/heads/main/image-8.jpeg)
-![image](https://raw.githubusercontent.com/SeptiawanAjiP/dewakoding-project-management/refs/heads/main/image-9.jpeg)
+![image](https://raw.githubusercontent.com/abdulfalaq5/pmx/main/image-2.jpeg)
+![image](https://raw.githubusercontent.com/abdulfalaq5/pmx/main/image-6.jpeg)
+![image](https://raw.githubusercontent.com/abdulfalaq5/pmx/main/image-7.jpeg)
+![image](https://raw.githubusercontent.com/abdulfalaq5/pmx/main/image-8.jpeg)
+![image](https://raw.githubusercontent.com/abdulfalaq5/pmx/main/image-9.jpeg)
 
 
 ## Installation
 
 1. Clone the repository:
    ```
-   git clone https://github.com/SeptiawanAjiP/dewakoding-project-management
-   cd dewakoding-project-management
+   git clone https://github.com/abdulfalaq5/pmx
+   cd pmx
    ```
 
 2. Install dependencies:
@@ -63,7 +63,7 @@ A Laravel Filament 3 application for managing projects with ticket management an
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=dewakoding_project_management
+   DB_DATABASE=falaq_project_management
    DB_USERNAME=root
    DB_PASSWORD=
    ```
@@ -164,7 +164,7 @@ This application supports Google OAuth login. Here's how to configure it:
    - In the sidebar, select "APIs & Services" > "Credentials"
    - Click "Create Credentials" > "OAuth 2.0 Client IDs"
    - Select "Web application" as the application type
-   - Enter application name (example: "DewaKoding Project Management")
+   - Enter application name (example: "Falaq Project Management System")
    - In "Authorized redirect URIs", add:
      ```
      http://localhost:8000/auth/google/callback
@@ -216,7 +216,7 @@ MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=your-app-password
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=your-email@gmail.com
-MAIL_FROM_NAME="DewaKoding Project Management"
+MAIL_FROM_NAME="Falaq Project Management System"
 ```
 
 ### 2. Queue Configuration

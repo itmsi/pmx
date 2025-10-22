@@ -1,10 +1,17 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "abdulfalaq5/pmx",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Falaq Project Management System - A Laravel Filament application for managing projects with ticket management and status tracking.",
+    "keywords": ["laravel", "filament", "project-management", "ticket-management"],
     "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Abdul Falaq",
+            "email": "abdulfalaq5@gmail.com",
+            "homepage": "https://github.com/abdulfalaq5"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.3",
