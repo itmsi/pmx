@@ -1,68 +1,43 @@
 services:
-  # PHP Service
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: laravel_app
-    restart: unless-stopped
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    networks:
-      - laravel-network
+    image: webdevops/php-apache:8.3
 
-  # Nginx Service
-  nginx:
-    image: nginx:alpine
-    container_name: laravel_nginx
-    restart: unless-stopped
-    ports:
-      - "8000:80"
-    volumes:
-      - ./:/var/www
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-    networks:
-      - laravel-network
+    container_name: pmx-system-php
 
-  # MySQL Service
-  db:
-    image: mysql:8.0
-    container_name: laravel_db
     restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    ports:
-      - "${DB_PORT}:3306"
+
+    working_dir: /app
+
     volumes:
-      - laravel-data:/var/lib/mysql
-    networks:
-      - laravel-network
-      
-  # PhpMyAdmin Service
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: laravel_phpmyadmin
-    restart: unless-stopped
+      - ./:/app
+
     ports:
-      - "8080:80"
+      - "127.0.0.1:9807:80"
+
+    env_file:
+      - .env
+
     environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      WEB_DOCUMENT_ROOT: /app/public
+
     networks:
-      - laravel-network
+      - infra_net
+
+  node:
+    image: node:22-alpine
+
+    container_name: pmx-system-node
+
+    working_dir: /app
+
+    volumes:
+      - ./:/app
+
+    tty: true
+
+    networks:
+      - infra_net
 
 networks:
-  laravel-network:
-    driver: bridge
-
-volumes:
-  laravel-data:
-    driver: local
+  infra_net:
+    external: true
