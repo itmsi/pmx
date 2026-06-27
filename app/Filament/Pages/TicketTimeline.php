@@ -28,28 +28,44 @@ class TicketTimeline extends Page implements HasForms
     {
         return 'View project tickets in Gantt chart timeline';
     }
-    public ?string $projectId = null;
+    public ?int $projectId = null;
     public Collection $projects;
-    public ?Project $selectedProject = null;
 
     protected $listeners = [
         'refreshData' => '$refresh'
     ];
+
+    public function getSelectedProjectProperty(): ?Project
+    {
+        if (! $this->projectId) {
+            return null;
+        }
+
+        return Project::find($this->projectId);
+    }
+
+    public function hydrate(): void
+    {
+        // Keep the computed selected project in sync after Livewire hydration.
+        $this->selectedProject = $this->projectId ? Project::find($this->projectId) : null;
+    }
 
     public function mount($project_id = null): void
     {
         try {
             $user = Auth::user();
 
-            if ($user->hasRole('super_admin')) {
+            if ($user->hasRole('super_admin') || $user->hasRole('admin')) {
                 $this->projects = Project::all();
             } else {
                 $this->projects = $user->projects ?? collect();
             }
 
-            if ($project_id && $this->projects->contains('id', $project_id)) {
-                $this->projectId = (string) $project_id;
-                $this->selectedProject = Project::find($project_id);
+            if ($project_id) {
+                $project = Project::find($project_id);
+                if ($project && ($this->projects->contains('id', $project_id) || $user->hasRole('admin') || $user->hasRole('super_admin'))) {
+                    $this->projectId = (int) $project_id;
+                }
             }
         } catch (\Exception $e) {
             \Log::error('Error in TicketTimeline mount: ' . $e->getMessage());
@@ -68,7 +84,6 @@ class TicketTimeline extends Page implements HasForms
             // Dispatch event untuk refresh gantt chart
             $this->dispatch('refreshGanttChart');
         } else {
-            $this->selectedProject = null;
             $this->projectId = null;
             $this->redirect(static::getUrl());
         }
@@ -76,10 +91,10 @@ class TicketTimeline extends Page implements HasForms
 
     public function selectProject($projectId): void
     {
-        $this->projectId = (string) $projectId;
-        $this->selectedProject = Project::find($projectId);
+        $this->projectId = (int) $projectId;
     
-        if ($this->selectedProject && $this->projects->contains('id', $projectId)) {
+        $project = Project::find($projectId);
+        if ($project && ($this->projects->contains('id', $projectId) || Auth::user()->hasRole('admin') || Auth::user()->hasRole('super_admin'))) {
             $this->redirect(static::getUrl(['project_id' => $projectId]), navigate: true);
         } else {
             Notification::make()
@@ -87,7 +102,6 @@ class TicketTimeline extends Page implements HasForms
                 ->danger()
                 ->send();
                 
-            $this->selectedProject = null;
             $this->projectId = null;
         }
     }
@@ -100,7 +114,7 @@ class TicketTimeline extends Page implements HasForms
     
         return Ticket::select('id', 'name', 'due_date', 'start_date', 'ticket_status_id')
             ->with(['status:id,name,color'])
-            ->where('project_id', $this->projectId)
+            ->where('project_id', (int) $this->projectId)
             ->whereNotNull('due_date')
             ->orderBy('due_date')
             ->get();
@@ -108,7 +122,8 @@ class TicketTimeline extends Page implements HasForms
 
     public function getGanttDataProperty(): array
     {
-        if (!$this->selectedProject) {
+        $selectedProject = $this->getSelectedProjectProperty();
+        if (!$selectedProject) {
             return ['data' => [], 'links' => []];
         }
     
@@ -179,12 +194,13 @@ class TicketTimeline extends Page implements HasForms
 
     private function getSimpleProgress($statusName): int
     {
-        if (!$this->selectedProject || empty($statusName)) {
+        $selectedProject = $this->getSelectedProjectProperty();
+        if (!$selectedProject || empty($statusName)) {
             return 0;
         }
         
         try {
-            $statuses = $this->selectedProject->ticketStatuses()
+            $statuses = $selectedProject->ticketStatuses()
                 ->orderBy('sort_order')
                 ->get();
             

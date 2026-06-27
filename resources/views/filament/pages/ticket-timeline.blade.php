@@ -6,7 +6,7 @@
                 <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
                     <div class="flex-1">
                         <h2 class="text-lg font-medium text-gray-900 dark:text-white">
-                            {{ $selectedProject ? $selectedProject->name : 'Select Project' }}
+                            {{ $this->selectedProject ? $this->selectedProject->name : 'Select Project' }}
                         </h2>
                     </div>
 
@@ -27,7 +27,7 @@
             </x-filament::section>
         </div>
 
-        @if ($selectedProject)
+        @if ($this->selectedProject)
             <!-- dhtmlxGantt Chart -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow">
                 <div class="p-4 border-b border-gray-200 dark:border-gray-700">
@@ -48,7 +48,9 @@
                 <!-- dhtmlxGantt Container -->
                 <div class="w-full">
                     @if (count($this->ganttData['data']) > 0)
-                        <div id="gantt_here" style="width:100%; height:600px;"></div>
+                        <div id="gantt_wrapper" wire:ignore wire:key="gantt-wrapper-{{ $projectId ?? 'none' }}">
+                            <div id="gantt_here" style="width:100%; height:600px;" wire:key="gantt-here-{{ $projectId ?? 'none' }}"></div>
+                        </div>
                     @else
                         <div class="flex flex-col items-center justify-center h-64 text-gray-500 gap-4">
                             <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
