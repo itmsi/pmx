@@ -236,10 +236,15 @@
                     }
 
                     try {
-                        // ✨ Enable marker plugin for today line
-                        gantt.plugins({
-                            marker: true
-                        });
+                        // ✨ Enable marker plugin for today line when available
+                        if (typeof gantt.plugins === 'function') {
+                            gantt.plugins({
+                                marker: true
+                            });
+                        }
+                    } catch (markerError) {
+                        console.warn('Gantt marker plugin not available:', markerError);
+                    }
 
                         gantt.config.date_format = "%Y-%m-%d %H:%i";
                         gantt.config.xml_date = "%Y-%m-%d %H:%i";
@@ -359,16 +364,20 @@
 
                         gantt.parse(processedData);
 
-                        // ✨ Add today marker line
-                        const today = new Date();
-                        gantt.addMarker({
-                            start_date: today,
-                            css: "today",
-                            text: "Today"
-                        });
+                        // ✨ Add today marker line when supported
+                        if (typeof gantt.addMarker === 'function') {
+                            const today = new Date();
+                            gantt.addMarker({
+                                start_date: today,
+                                css: "today",
+                                text: "Today"
+                            });
+                        } else {
+                            console.warn('Gantt addMarker is not available; skipping today marker');
+                        }
 
                         console.log('dhtmlxGantt initialized successfully with', processedData.data.length,
-                            'tasks and today marker');
+                            'tasks');
 
                     } catch (parseError) {
                         console.error('Error parsing gantt data:', parseError);

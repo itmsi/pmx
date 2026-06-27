@@ -144,10 +144,16 @@
                         return;
                     }
 
-                    // ✨ Enable marker plugin for today line
-                    gantt.plugins({
-                        marker: true
-                    });
+                    // ✨ Enable marker plugin for today line when available
+                    if (typeof gantt.plugins === 'function') {
+                        try {
+                            gantt.plugins({
+                                marker: true
+                            });
+                        } catch (markerError) {
+                            console.warn('Gantt marker plugin not available:', markerError);
+                        }
+                    }
 
                     gantt.config.date_format = "%d-%m-%Y %H:%i";
 
@@ -217,16 +223,20 @@
                     gantt.clearAll();
                     gantt.parse(ganttData);
 
-                    // ✨ Add today marker line
-                    const today = new Date();
-                    gantt.addMarker({
-                        start_date: today,
-                        css: "today",
-                        text: "Today"
-                    });
+                    // ✨ Add today marker line when supported
+                    if (typeof gantt.addMarker === 'function') {
+                        const today = new Date();
+                        gantt.addMarker({
+                            start_date: today,
+                            css: "today",
+                            text: "Today"
+                        });
+                    } else {
+                        console.warn('Gantt addMarker is not available; skipping today marker');
+                    }
 
                     console.log('Page dhtmlxGantt initialized successfully with', ganttData.data.length,
-                        'projects and today marker');
+                        'projects');
 
                 } catch (error) {
                     console.error('Error initializing Page dhtmlxGantt:', error);
