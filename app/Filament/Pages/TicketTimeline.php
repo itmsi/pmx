@@ -28,25 +28,17 @@ class TicketTimeline extends Page implements HasForms
     {
         return 'View project tickets in Gantt chart timeline';
     }
+
     public ?int $projectId = null;
     public Collection $projects;
+    public ?Project $selectedProject = null;
 
     protected $listeners = [
         'refreshData' => '$refresh'
     ];
 
-    public function getSelectedProjectProperty(): ?Project
-    {
-        if (! $this->projectId) {
-            return null;
-        }
-
-        return Project::find($this->projectId);
-    }
-
     public function hydrate(): void
     {
-        // Keep the computed selected project in sync after Livewire hydration.
         $this->selectedProject = $this->projectId ? Project::find($this->projectId) : null;
     }
 
@@ -65,6 +57,7 @@ class TicketTimeline extends Page implements HasForms
                 $project = Project::find($project_id);
                 if ($project && ($this->projects->contains('id', $project_id) || $user->hasRole('admin') || $user->hasRole('super_admin'))) {
                     $this->projectId = (int) $project_id;
+                    $this->selectedProject = $project;
                 }
             }
         } catch (\Exception $e) {
@@ -95,6 +88,7 @@ class TicketTimeline extends Page implements HasForms
     
         $project = Project::find($projectId);
         if ($project && ($this->projects->contains('id', $projectId) || Auth::user()->hasRole('admin') || Auth::user()->hasRole('super_admin'))) {
+            $this->selectedProject = $project;
             $this->redirect(static::getUrl(['project_id' => $projectId]), navigate: true);
         } else {
             Notification::make()
@@ -122,8 +116,7 @@ class TicketTimeline extends Page implements HasForms
 
     public function getGanttDataProperty(): array
     {
-        $selectedProject = $this->getSelectedProjectProperty();
-        if (!$selectedProject) {
+        if (!$this->selectedProject) {
             return ['data' => [], 'links' => []];
         }
     
@@ -194,8 +187,7 @@ class TicketTimeline extends Page implements HasForms
 
     private function getSimpleProgress($statusName): int
     {
-        $selectedProject = $this->getSelectedProjectProperty();
-        if (!$selectedProject || empty($statusName)) {
+        if (!$this->selectedProject || empty($statusName)) {
             return 0;
         }
         
