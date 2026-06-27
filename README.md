@@ -87,6 +87,8 @@ A Laravel Filament 3 application for managing projects with ticket management an
    php artisan shield:setup
    php artisan shield:install
    php artisan shield:super-admin
+
+   php artisan db:seed --class=DummyDataSeeder
    ```
 9. Compile assets:
    ```
